@@ -35,6 +35,9 @@ public protocol CollectionCellViewModel: ReusableCellViewModelProtocol, Diffable
     /// in the cell model and return the updated cell.
     /// - Parameter cell: the cell which's content need to be updated.
     func applyViewModelToCell(_ cell: UICollectionViewCell)
+
+    /// The size of this cell.
+    func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize
 }
 
 /// Default implementations for `CollectionCellViewModel`.
@@ -48,6 +51,14 @@ public extension CollectionCellViewModel {
 
     /// Default implementation, returns `nil`.
     var didDeselect: DidDeselectClosure? { return nil }
+
+    /// Default implementation, returns flowLayout.itemSize or defaul size
+    func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            return .zero
+        }
+        return flowLayout.itemSize
+    }
 }
 
 /// View model for supplementary views in collection views.
@@ -149,13 +160,25 @@ public struct CollectionSectionViewModel: DiffableViewModel {
         diffingKey: String?,
         cellViewModels: [CollectionCellViewModel],
         headerViewModel: CollectionSupplementaryViewModel? = nil,
-        footerViewModel: CollectionSupplementaryViewModel? = nil
+        footerViewModel: CollectionSupplementaryViewModel? = nil,
+        insets: ((UICollectionView, UICollectionViewLayout) -> UIEdgeInsets)? = nil,
+        minimumLineSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)? = nil,
+        minimumInteritemSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)? = nil
     ) {
         self.cellViewModels = cellViewModels
         self.headerViewModel = headerViewModel
         self.footerViewModel = footerViewModel
         self.diffingKey = diffingKey ?? UUID().uuidString
+        self.insets = insets
+        self.minimumLineSpacing = minimumLineSpacing
+        self.minimumInteritemSpacing = minimumInteritemSpacing
     }
+
+    var insets: ((UICollectionView, UICollectionViewLayout) -> UIEdgeInsets)?
+
+    var minimumLineSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
+
+    var minimumInteritemSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
 }
 
 /// `Collection` support for diffing
