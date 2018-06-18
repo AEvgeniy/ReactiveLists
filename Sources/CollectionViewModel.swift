@@ -36,6 +36,9 @@ public protocol CollectionCellViewModel: ReusableCellViewModelProtocol {
     /// in the cell model and return the updated cell.
     /// - Parameter cell: the cell which's content need to be updated.
     func applyViewModelToCell(_ cell: UICollectionViewCell)
+
+    /// The size of this cell.
+    func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize
 }
 
 /// Default implementations for `CollectionViewCellViewModel`.
@@ -49,6 +52,14 @@ public extension CollectionCellViewModel {
 
     /// Default implementation, returns `nil`.
     var didDeselect: DidDeselectClosure? { return nil }
+
+    /// Default implementation, returns flowLayout.itemSize or defaul size
+    func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            return CGSize(width: 44, height: 44)
+        }
+        return flowLayout.itemSize
+    }
 }
 
 /// View model for supplementary views in collection views.

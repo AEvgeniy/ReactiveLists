@@ -169,6 +169,11 @@ public class CollectionViewDriver: NSObject {
         }
     }
 
+    private func _sizeForCellAt(_ indexPath: IndexPath, collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        guard let cellModel = self.collectionViewModel?[indexPath] else { return CGSize.zero }
+        return cellModel.cellSize(collectionViewLayout)
+    }
+
     private func _sizeForSupplementaryViewOfKind(_ elementKind: SupplementaryViewKind, inSection section: Int, collectionViewLayout: UICollectionViewLayout) -> CGSize {
         guard let sectionModel = self.collectionViewModel?[section] else { return CGSize.zero }
         let isHeader = elementKind == .header
@@ -246,6 +251,11 @@ extension CollectionViewDriver: UICollectionViewDelegate {
 }
 
 extension CollectionViewDriver: UICollectionViewDelegateFlowLayout {
+    /// :nodoc:
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self._sizeForCellAt(indexPath, collectionViewLayout: collectionViewLayout)
+    }
+
     /// :nodoc:
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return self._sizeForSupplementaryViewOfKind(.header, inSection: section, collectionViewLayout: collectionViewLayout)
