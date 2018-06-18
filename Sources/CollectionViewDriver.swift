@@ -170,6 +170,11 @@ public class CollectionViewDriver: NSObject {
         }
     }
 
+    private func _sizeForCellAt(_ indexPath: IndexPath, collectionViewLayout: UICollectionViewLayout) -> CGSize {
+        guard let cellModel = self.collectionViewModel?[ifExists: indexPath] else { return CGSize.zero }
+        return cellModel.cellSize(collectionViewLayout)
+    }
+
     private func _sizeForSupplementaryViewOfKind(_ elementKind: SupplementaryViewKind, inSection section: Int, collectionViewLayout: UICollectionViewLayout) -> CGSize {
         guard let sectionModel = self.collectionViewModel?[ifExists: section] else { return CGSize.zero }
         let isHeader = elementKind == .header
@@ -249,6 +254,11 @@ extension CollectionViewDriver: UICollectionViewDelegate {
 
 extension CollectionViewDriver: UICollectionViewDelegateFlowLayout {
     /// :nodoc:
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self._sizeForCellAt(indexPath, collectionViewLayout: collectionViewLayout)
+    }
+
+    /// :nodoc:
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return self._sizeForSupplementaryViewOfKind(.header, inSection: section, collectionViewLayout: collectionViewLayout)
     }
@@ -256,5 +266,35 @@ extension CollectionViewDriver: UICollectionViewDelegateFlowLayout {
     /// :nodoc:
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return self._sizeForSupplementaryViewOfKind(.footer, inSection: section, collectionViewLayout: collectionViewLayout)
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if let insets = self.collectionViewModel?[ifExists: section]?.insets {
+            return insets(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.sectionInset
+        } else {
+            return .zero
+        }
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if let minimumLineSpacing = self.collectionViewModel?[ifExists: section]?.minimumLineSpacing {
+            return minimumLineSpacing(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.minimumLineSpacing
+        } else {
+            return 0
+        }
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if let minimumInteritemSpacing = self.collectionViewModel?[ifExists: section]?.minimumInteritemSpacing {
+            return minimumInteritemSpacing(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.minimumInteritemSpacing
+        } else {
+            return 0
+        }
     }
 }
