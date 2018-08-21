@@ -172,12 +172,18 @@ public struct CollectionSectionViewModel {
         cellViewModels: [CollectionCellViewModel],
         headerViewModel: CollectionSupplementaryViewModel? = nil,
         footerViewModel: CollectionSupplementaryViewModel? = nil,
-        diffingKey: String? = nil
+        diffingKey: String? = nil,
+        insets: ((UICollectionView, UICollectionViewLayout) -> UIEdgeInsets)? = nil,
+        minimumLineSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)? = nil,
+        minimumInteritemSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)? = nil
         ) {
         self.cellViewModels = cellViewModels
         self.headerViewModel = headerViewModel
         self.footerViewModel = footerViewModel
         self.diffingKey = diffingKey
+        self.insets = insets
+        self.minimumLineSpacing = minimumLineSpacing
+        self.minimumInteritemSpacing = minimumInteritemSpacing
     }
 
     private struct BlankSupplementaryViewModel: CollectionSupplementaryViewModel {
@@ -186,6 +192,12 @@ public struct CollectionSectionViewModel {
 
         func applyViewModelToView(_ view: UICollectionReusableView) { }
     }
+
+    var insets: ((UICollectionView, UICollectionViewLayout) -> UIEdgeInsets)?
+
+    var minimumLineSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
+
+    var minimumInteritemSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
 }
 
 // MARK: Initializers without header/footer view models

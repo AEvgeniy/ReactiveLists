@@ -265,4 +265,34 @@ extension CollectionViewDriver: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return self._sizeForSupplementaryViewOfKind(.footer, inSection: section, collectionViewLayout: collectionViewLayout)
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if let insets = self.collectionViewModel?[section]?.insets {
+            return insets(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.sectionInset
+        } else {
+            return .zero
+        }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if let minimumLineSpacing = self.collectionViewModel?[section]?.minimumLineSpacing {
+            return minimumLineSpacing(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.minimumLineSpacing
+        } else {
+            return 0
+        }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if let minimumInteritemSpacing = self.collectionViewModel?[section]?.minimumInteritemSpacing {
+            return minimumInteritemSpacing(collectionView, collectionViewLayout)
+        } else if let collectionViewFlowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            return collectionViewFlowLayout.minimumInteritemSpacing
+        } else {
+            return 0
+        }
+    }
 }
