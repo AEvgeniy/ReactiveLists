@@ -198,6 +198,11 @@ public struct CollectionSectionViewModel {
     var minimumLineSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
 
     var minimumInteritemSpacing: ((UICollectionView, UICollectionViewLayout) -> CGFloat)?
+
+    /// Returns `true` is the section is empty, `false` otherwise.
+    public var isEmpty: Bool {
+        return self.cellViewModels.isEmpty
+    }
 }
 
 // MARK: Initializers without header/footer view models
