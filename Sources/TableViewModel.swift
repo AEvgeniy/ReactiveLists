@@ -25,6 +25,9 @@ public protocol TableCellViewModel: ReusableCellViewModelProtocol, DiffableViewM
     /// The height of this cell.
     var rowHeight: CGFloat? { get }
 
+    /// The height of this cell.
+    func rowHeight(for tableView: UITableView) -> CGFloat?
+
     /// The editing style for this cell.
     var editingStyle: UITableViewCell.EditingStyle { get }
 
@@ -62,6 +65,13 @@ public extension TableCellViewModel {
     /// - Note: If `nil`, the `TableViewDriver` will fallback to `TableViewModel.defaultRowHeight`.
     /// - See also: TableViewModel
     var rowHeight: CGFloat? {
+        return nil
+    }
+
+    /// Default implementation, returns nil.
+    /// - Note: If `nil`, the `TableViewDriver` will fallback to `TableViewModel.defaultRowHeight`.
+    /// - See also: TableViewModel
+    func rowHeight(for tableView: UITableView) -> CGFloat? {
         return nil
     }
 
