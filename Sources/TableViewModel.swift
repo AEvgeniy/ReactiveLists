@@ -23,7 +23,7 @@ public protocol TableCellViewModel: ReusableCellViewModelProtocol, DiffableViewM
     var accessibilityFormat: CellAccessibilityFormat { get }
 
     /// The height of this cell.
-    var rowHeight: CGFloat { get }
+    var rowHeight: CGFloat? { get }
 
     /// The editing style for this cell.
     var editingStyle: UITableViewCell.EditingStyle { get }
@@ -56,36 +56,38 @@ public protocol TableCellViewModel: ReusableCellViewModelProtocol, DiffableViewM
 }
 
 /// Default implementations for `TableCellViewModel`.
-public extension TableCellViewModel {
+extension TableCellViewModel {
 
-    /// Default implementation, returns `44.0`.
-    var rowHeight: CGFloat {
-        return 44.0
+    /// Default implementation, returns `nil`.
+    /// - Note: If `nil`, the `TableViewDriver` will fallback to `TableViewModel.defaultRowHeight`.
+    /// - See also: TableViewModel
+    public var rowHeight: CGFloat? {
+        return nil
     }
 
     /// Default implementation, returns `.none`.
-    var editingStyle: UITableViewCell.EditingStyle { return .none }
+    public var editingStyle: UITableViewCell.EditingStyle { return .none }
 
     /// Default implementation, returns `true`.
-    var shouldHighlight: Bool { return true }
+    public var shouldHighlight: Bool { return true }
 
     /// Default implementation, returns `false`.
-    var shouldIndentWhileEditing: Bool { return false }
+    public var shouldIndentWhileEditing: Bool { return false }
 
     /// Default implementation, returns `nil`.
-    var willBeginEditing: WillBeginEditingClosure? { return nil }
+    public var willBeginEditing: WillBeginEditingClosure? { return nil }
 
     /// Default implementation, returns `nil`.
-    var didEndEditing: DidEndEditingClosure? { return nil }
+    public var didEndEditing: DidEndEditingClosure? { return nil }
 
     /// Default implementation, returns `nil`.
-    var commitEditingStyle: CommitEditingStyleClosure? { return nil }
+    public var commitEditingStyle: CommitEditingStyleClosure? { return nil }
 
     /// Default implementation, returns `nil`.
-    var didSelect: DidSelectClosure? { return nil }
+    public var didSelect: DidSelectClosure? { return nil }
 
     /// Default implementation, returns `nil`.
-    var accessoryButtonTapped: AccessoryButtonTappedClosure? { return nil }
+    public var accessoryButtonTapped: AccessoryButtonTappedClosure? { return nil }
 }
 
 /// Protocol that needs to be implemented by table view cell view models
@@ -210,6 +212,9 @@ extension TableSectionViewModel: Collection {
 /// The view model that describes a `UITableView`.
 public struct TableViewModel {
 
+    /// The default row height for this table view.  The default value is 44.
+    public let defaultRowHeight: CGFloat
+
     /// The section index titles for this table view.
     public let sectionIndexTitles: [String]?
 
@@ -218,7 +223,7 @@ public struct TableViewModel {
 
     /// Returns `true` if this table has all empty sections.
     public var isEmpty: Bool {
-        return self.sectionModels.first(where: { !$0.isEmpty }) == nil
+        return self.sectionModels.allSatisfy { $0.isEmpty }
     }
 
     /// Initializes a table view model with one section and the cell models provided
@@ -239,9 +244,10 @@ public struct TableViewModel {
     /// - Parameters:
     ///   - sectionModels: the sections that need to be shown in this table view.
     ///   - sectionIndexTitles: the section index titles for this table view.
-    public init(sectionModels: [TableSectionViewModel], sectionIndexTitles: [String]? = nil) {
+    public init(sectionModels: [TableSectionViewModel], sectionIndexTitles: [String]? = nil, defaultRowHeight: CGFloat = 44.0) {
         self.sectionModels = sectionModels
         self.sectionIndexTitles = sectionIndexTitles
+        self.defaultRowHeight = defaultRowHeight
     }
 
     /// Returns the section model at the specified index or `nil` if no such section exists.

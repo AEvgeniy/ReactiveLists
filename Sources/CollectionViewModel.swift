@@ -41,19 +41,19 @@ public protocol CollectionCellViewModel: ReusableCellViewModelProtocol, Diffable
 }
 
 /// Default implementations for `CollectionCellViewModel`.
-public extension CollectionCellViewModel {
+extension CollectionCellViewModel {
 
     /// Default implementation, returns `true`.
-    var shouldHighlight: Bool { return true }
+    public var shouldHighlight: Bool { return true }
 
     /// Default implementation, returns `nil`.
-    var didSelect: DidSelectClosure? { return nil }
+    public var didSelect: DidSelectClosure? { return nil }
 
     /// Default implementation, returns `nil`.
-    var didDeselect: DidDeselectClosure? { return nil }
+    public var didDeselect: DidDeselectClosure? { return nil }
 
     /// Default implementation, returns flowLayout.itemSize or defaul size
-    func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize {
+    public func cellSize(_ collectionViewLayout: UICollectionViewLayout) -> CGSize {
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
             return .zero
         }
@@ -77,13 +77,13 @@ public protocol CollectionSupplementaryViewModel: ReusableSupplementaryViewModel
 }
 
 /// Default implementations for `CollectionViewSupplementaryViewModel`.
-public extension CollectionSupplementaryViewModel {
+extension CollectionSupplementaryViewModel {
 
     /// Default implementation, returns `nil`.
-    var viewInfo: SupplementaryViewInfo? { return nil }
+    public var viewInfo: SupplementaryViewInfo? { return nil }
 
     /// Default implementation, returns `nil`.
-    var height: CGFloat? { return nil }
+    public var height: CGFloat? { return nil }
 }
 
 /// The view model that describes a `UICollectionView`.
@@ -94,7 +94,7 @@ public struct CollectionViewModel {
 
     /// Returns `true` if this collection has all empty sections.
     public var isEmpty: Bool {
-        return self.sectionModels.first(where: { !$0.isEmpty }) == nil
+        return self.sectionModels.allSatisfy { $0.isEmpty }
     }
 
     /// Initializes a collection view model with the sections provided.

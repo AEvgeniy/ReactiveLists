@@ -4,16 +4,52 @@ The changelog for `ReactiveLists`. Also see the [releases](https://github.com/pl
 
 ------
 
-0.4.0 (NEXT)
-------------
+NEXT
+----
 
-This release closes the [0.4.0 milestone](https://github.com/plangrid/ReactiveLists/milestone/10).
+### Changed
+- Upgrades SwiftLint to 0.31.0 and add several new rules. ([#164](https://github.com/plangrid/ReactiveLists/pull/164), [@anayini](https://github.com/anayini))
+- Upgrade Travis to Xcode 10.2, SDK 12.2
+
+0.5.1
+-----
+
+Re-add support for Swift 4.2 to make transitioning easier.
+
+0.5.0
+-----
+
+This release closes the [0.5.0 milestone](https://github.com/plangrid/ReactiveLists/milestone/12?closed=1).
 
 ### Breaking
 
+- Migrated to Swift 5.0
+- Dropped support for iOS 10. iOS 11 and above now required.
+
+### Changed
+
+- Upgraded to DifferenceKit to 1.1.0
+
+0.4.0
+-----
+
+This release closes the [0.4.0 milestone](https://github.com/plangrid/ReactiveLists/milestone/10?closed=1).
+
+### Breaking
+
+- Improve semantics of row height API ([#154](https://github.com/plangrid/ReactiveLists/pull/154), [@asmallteapot](https://github.com/asmallteapot))
+    - Make `TableCellViewModel.rowHeight` optional, defaulting to `nil`
+    - Add `TableViewModel.defaultRowHeight`, defaulting to `44.0`
+
 - Updates the initializers for `TableSectionViewModel` and `CollectionSectionViewModel` so that the `diffingKey` argument is _required_. This prevents accidental misuse of the automatic diffing API, which was possible if you relied on the previous default parameter value. ([#147](https://github.com/plangrid/ReactiveLists/pull/147), [@ronaldsmartin](https://github.com/ronaldsmartin))
 
-- Upgrades DifferenceKit to 0.7.2  ([#148](https://github.com/plangrid/ReactiveLists/pull/148), [@benasher44](https://github.com/benasher44)
+- Upgrades DifferenceKit to 0.8.0  ([#153](https://github.com/plangrid/ReactiveLists/pull/153), [@anayini](https://github.com/anayini))
+
+### Changed
+
+- Use `allSatisfy(_:)` in places where we would use `first(where:)` and a `nil` check
+
+- Upgrades SwiftLint to 0.30.1 ([#149](https://github.com/plangrid/ReactiveLists/pull/149), [@anayini](https://github.com/anayini))
 
 0.3.0
 -----
@@ -133,6 +169,8 @@ This release closes the [0.1.1 milestone](https://github.com/plangrid/ReactiveLi
 - `SupplementaryViewKind` now conforms to `Equatable`
 - `CellAccessibilityFormat` now conforms to `Equatable`
 - `SupplementaryAccessibilityFormat` now conforms to `Equatable`
+
+------
 
 0.1.0
 -----

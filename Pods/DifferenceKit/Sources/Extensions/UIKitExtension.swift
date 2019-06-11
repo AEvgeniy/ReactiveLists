@@ -23,12 +23,12 @@ public extension UITableView {
         ) {
         reload(
             using: stagedChangeset,
-            deleteSectionsAnimation: animation,
-            insertSectionsAnimation: animation,
-            reloadSectionsAnimation: animation,
-            deleteRowsAnimation: animation,
-            insertRowsAnimation: animation,
-            reloadRowsAnimation: animation,
+            deleteSectionsAnimation: animation(),
+            insertSectionsAnimation: animation(),
+            reloadSectionsAnimation: animation(),
+            deleteRowsAnimation: animation(),
+            insertRowsAnimation: animation(),
+            reloadRowsAnimation: animation(),
             interrupt: interrupt,
             setData: setData
         )
@@ -67,8 +67,6 @@ public extension UITableView {
             setData(data)
             return reloadData()
         }
-
-        let contentOffset = self.contentOffset
 
         for changeset in stagedChangeset {
             if let interrupt = interrupt, interrupt(changeset), let data = stagedChangeset.last?.data {
@@ -112,10 +110,6 @@ public extension UITableView {
                 }
             }
         }
-
-        if contentSize.height > bounds.size.height {
-            setContentOffset(contentOffset, animated: false)
-        }
     }
 
     private func _performBatchUpdates(_ updates: () -> Void) {
@@ -151,8 +145,6 @@ public extension UICollectionView {
             setData(data)
             return reloadData()
         }
-
-        let contentOffset = self.contentOffset
 
         for changeset in stagedChangeset {
             if let interrupt = interrupt, interrupt(changeset), let data = stagedChangeset.last?.data {
@@ -195,10 +187,6 @@ public extension UICollectionView {
                     moveItem(at: IndexPath(item: source.element, section: source.section), to: IndexPath(item: target.element, section: target.section))
                 }
             })
-        }
-
-        if contentSize.height > bounds.size.height {
-            setContentOffset(contentOffset, animated: false)
         }
     }
 }

@@ -39,17 +39,20 @@ final class TableViewDriverTests: XCTestCase {
                 diffingKey: nil,
                 cellViewModels: [],
                 headerViewModel: TestHeaderFooterViewModel(height: 10, viewKind: .header, label: "A"),
-                footerViewModel: TestHeaderFooterViewModel(height: 11, viewKind: .footer, label: "A")),
+                footerViewModel: TestHeaderFooterViewModel(height: 11, viewKind: .footer, label: "A")
+            ),
             TableSectionViewModel(
                 diffingKey: nil,
                 cellViewModels: ["A", "B", "C"].map { _generateTestCellViewModel($0) },
                 headerViewModel: nil,
-                footerViewModel: TestHeaderFooterViewModel(title: "footer_2", height: 21)),
-             TableSectionViewModel(
+                footerViewModel: TestHeaderFooterViewModel(title: "footer_2", height: 21)
+            ),
+            TableSectionViewModel(
                 diffingKey: nil,
                 cellViewModels: ["D", "E", "F"].map { _generateTestCellViewModel($0) },
                 headerViewModel: TestHeaderFooterViewModel(title: "header_3", height: 30),
-                footerViewModel: nil),
+                footerViewModel: nil
+            )
             ], sectionIndexTitles: ["A", "Z", "Z"])
         self._tableViewDataSource = TableViewDriver(
             tableView: tableView,
@@ -268,7 +271,7 @@ final class TableViewDriverTests: XCTestCase {
         XCTAssertNil(defaultCellViewModel.willBeginEditing)
         XCTAssertNil(defaultCellViewModel.didEndEditing)
         XCTAssertEqual(defaultCellViewModel.editingStyle, .none)
-        XCTAssertEqual(defaultCellViewModel.rowHeight, 44.0)
+        XCTAssertEqual(defaultCellViewModel.rowHeight, nil)
         XCTAssertTrue(defaultCellViewModel.shouldHighlight)
         XCTAssertNil(defaultCellViewModel.commitEditingStyle)
         XCTAssertNil(defaultCellViewModel.didSelect)
