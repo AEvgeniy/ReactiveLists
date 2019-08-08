@@ -301,6 +301,13 @@ extension TableViewDriver: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return self.tableViewModel?[ifExists: section]?.footerViewModel?.height ?? CGFloat.leastNormalMagnitude
     }
+    
+    /// :nodoc:
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let tableViewModel = self.tableViewModel else { return 0 }
+        
+        return tableViewModel[ifExists: indexPath]?.estimatedRowHeight ?? tableViewModel.defaultRowHeight
+    }
 
     /// :nodoc:
     public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -348,5 +355,10 @@ extension TableViewDriver: UITableViewDelegate {
     /// :nodoc:
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return self.tableViewModel?[ifExists: indexPath]?.shouldHighlight ?? true
+    }
+    
+    /// :nodoc:
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.tableViewModel?[ifExists: indexPath]?.willDisplayCell(cell)
     }
 }

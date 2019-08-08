@@ -24,6 +24,9 @@ public protocol TableCellViewModel: ReusableCellViewModelProtocol, DiffableViewM
 
     /// The height of this cell.
     var rowHeight: CGFloat? { get }
+    
+    /// The estimated height of this cell.
+    var estimatedRowHeight: CGFloat? { get }
 
     /// The height of this cell.
     func rowHeight(for tableView: UITableView) -> CGFloat?
@@ -56,6 +59,11 @@ public protocol TableCellViewModel: ReusableCellViewModelProtocol, DiffableViewM
     /// in the cell model and return the updated cell.
     /// - Parameter cell: the cell which contents need to be updated.
     func applyViewModelToCell(_ cell: UITableViewCell)
+    
+    /// Notify cell's view model about its content will display onscreen
+    ///
+    /// - Parameter cell: the cell which content will display onscreen
+    func willDisplayCell(_ cell: UITableViewCell)
 }
 
 /// Default implementations for `TableCellViewModel`.
@@ -72,6 +80,13 @@ public extension TableCellViewModel {
     /// - Note: If `nil`, the `TableViewDriver` will fallback to `TableViewModel.defaultRowHeight`.
     /// - See also: TableViewModel
     func rowHeight(for tableView: UITableView) -> CGFloat? {
+        return nil
+    }
+    
+    /// Default implementation, returns nil.
+    /// - Note: If `nil`, the `TableViewDriver` will fallback to `TableViewModel.defaultRowHeight`.
+    /// - See also: TableViewModel
+    var estimatedRowHeight: CGFloat? {
         return nil
     }
 
@@ -98,6 +113,8 @@ public extension TableCellViewModel {
 
     /// Default implementation, returns `nil`.
     var accessoryButtonTapped: AccessoryButtonTappedClosure? { return nil }
+    
+    func willDisplayCell(_ cell: UITableViewCell) {}
 }
 
 /// Protocol that needs to be implemented by table view cell view models
